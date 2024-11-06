@@ -2,6 +2,7 @@
 
 cd /build
 
+git config --global --add safe.directory /kismet/.git
 git clone --recursive /kismet
 cd kismet
 git checkout master
@@ -9,6 +10,20 @@ git checkout master
 if [ "${CHECKOUT}"x != "x" ]; then
 	echo "Checking out ${CHECKOUT}"
 	git checkout ${CHECKOUT}
+fi
+
+if test "${CHECKOUT}"x = "HEADx"; then
+    touch /dpkgs/last_git_${ARCH}
+
+    if test "$(cat /dpkgs/last_git_${ARCH})" = "$(git rev-parse --short HEAD)"; then
+        echo "*** No build required ***"
+        exit 0
+    fi
+
+    echo "*** Cleaning old git packages ***"
+    rm -vf ${BASE_DIR}/dpkgs/*git*${ARCH}.deb
+
+    echo -n "$(git rev-parse --short HEAD)" > /dpkgs/last_git_${ARCH}
 fi
 
 # Kluge the path
@@ -44,6 +59,7 @@ make -j${NCORES}
 
 # Build wifi coconut 
 # cd /build 
+# git config --global --add safe.directory /build/hak5-wifi-coconut/.git
 # git clone https://github.com/hak5/hak5-wifi-coconut
 # cd hak5-wifi-coconut 
 # mkdir build 
