@@ -150,6 +150,15 @@ fpm -t deb -a ${ARCH} -s dir -n kismet-capture-nrf-52840 -v ${PACKAGE} \
     ./packaging/udev/99-kismet-nrf52840.rules=/etc/udev/rules.d/99-kismet-nrf52840.rules \
     ./capture_nrf_52840/kismet_cap_nrf_52840=/usr/bin/kismet_cap_nrf_52840 &
 
+# fpm -t deb -a ${ARCH} -s dir -n kismet-capture-catsniffer-zigbee -v ${PACKAGE} \
+#     --description "Kismet CatSniffer zigbee hardware capture" \
+#     --deb-templates /tmp/fpm/debian/kismet.templates \
+#     --deb-config /tmp/fpm/debian/kismet.config \
+#     --depends libcap2-bin \
+#     --depends libcap2 \
+#     --depends libwebsockets8 \
+#     ./capture_catsniffer_zigbee/kismet_cap_catsniffer_zigbee=/usr/bin/kismet_cap_catsniffer_zigbee &
+
 fpm -t deb -a ${ARCH} -s dir -n kismet-capture-nxp-kw41z -v ${PACKAGE} \
     --description "Kismet NXP KW41Z BTLE and Zigbee Sniffer capture helper" \
     --deb-templates /tmp/fpm/debian/kismet.templates \
@@ -202,6 +211,17 @@ fpm -t deb -a ${ARCH} -s dir -n kismet-logtools -v ${PACKAGE} \
     ./log_tools/kismetdb_to_kml=/usr/bin/kismetdb_to_kml \
     ./log_tools/kismetdb_to_pcap=/usr/bin/kismetdb_to_pcap &
 
+fpm -t deb -a ${ARCH} -s dir -n kismet-capture-wch-ble-analyzer-pro -v ${PACKAGE} \
+    --description "Kismet WCH BLE Analyzer Pro capture" \
+    --deb-templates /tmp/fpm/debian/kismet.templates \
+    --deb-config /tmp/fpm/debian/kismet.config \
+    --depends libcap2-bin \
+    --depends libcap2 \
+    --depends libwebsockets8 \
+    --depends libusb-1.0-0 \
+    ./packaging/udev/99-kismet-wch-ble-pro-usb.rules=/etc/udev/rules.d/99-kismet-wch-ble-pro-usb.rules \
+    ./capture_wch_ble_analyzer_pro/kismet_cap_wch_ble_analyzer_pro=/usr/bin/kismet_cap_wch_ble_analyzer_pro &
+
 fpm -t deb -a ${ARCH} -s dir -n kismet-adsb-icao-data -v ${PACKAGE} \
     --description "Kismet ADSB ICAO data" \
     ./conf/kismet_adsb_icao.txt.gz=/usr/share/kismet/kismet_adsb_icao.txt.gz &
@@ -227,6 +247,7 @@ fpm -t deb -a ${ARCH} -s empty -n kismet -v ${PACKAGE} \
     --depends kismet-capture-serial-radview \
     --depends kismet-capture-radiacode-usb \
     --depends kismet-capture-antsdr-droneid \
+    --depends kismet-capture-wch-ble-analyzer-pro \
     --depends kismet-logtools &
 
 wait
